@@ -17,9 +17,6 @@ import (
 
 	cmtcmd "github.com/cometbft/cometbft/cmd/cometbft/commands"
 	cmtcfg "github.com/cometbft/cometbft/config"
-	cmtcli "github.com/cometbft/cometbft/libs/cli"
-	cmtflags "github.com/cometbft/cometbft/libs/cli/flags"
-	cmtlog "github.com/cometbft/cometbft/libs/log"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
@@ -154,22 +151,23 @@ func InterceptConfigsPreRunHandler(cmd *cobra.Command, customAppConfigTemplate s
 		return err
 	}
 
-	var logger cmtlog.Logger
+	var logger log.Logger
 	if serverCtx.Viper.GetString(flags.FlagLogFormat) == cmtcfg.LogFormatJSON {
-		logger = cmtlog.NewTMJSONLogger(cmtlog.NewSyncWriter(os.Stdout))
+		logger = log.NewLogger()
 	} else {
-		logger = cmtlog.NewTMLogger(cmtlog.NewSyncWriter(os.Stdout))
+		// logger = cmtlog.NewTMLogger(cmtlog.NewSyncWriter(os.Stdout))
+		logger = log.NewLogger()
 	}
-	logger, err = cmtflags.ParseLogLevel(config.LogLevel, logger, cmtcfg.DefaultLogLevel)
-	if err != nil {
-		return err
-	}
+	// logger, err = cmtflags.ParseLogLevel(config.LogLevel, logger, cmtcfg.DefaultLogLevel)
+	// if err != nil {
+	// 	return err
+	// }
 
 	// Check if the CometBFT flag for trace logging is set if it is then setup
 	// a tracing logger in this app as well.
-	if serverCtx.Viper.GetBool(cmtcli.TraceFlag) {
-		logger = cmtlog.NewTracingLogger(logger)
-	}
+	// if serverCtx.Viper.GetBool(cmtcli.TraceFlag) {
+	// 	logger = cmtlog.NewTracingLogger(logger)
+	// }
 
 	serverCtx.Logger = logger.With("module", "server")
 
