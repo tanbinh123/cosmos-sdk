@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -14,19 +15,18 @@ import (
 	"time"
 
 	"github.com/otiai10/copy"
-	"github.com/rs/zerolog"
 
 	"cosmossdk.io/x/upgrade/plan"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 )
 
 type Launcher struct {
-	logger *zerolog.Logger
+	logger log.Logger
 	cfg    *Config
 	fw     *fileWatcher
 }
 
-func NewLauncher(logger *zerolog.Logger, cfg *Config) (Launcher, error) {
+func NewLauncher(logger log.Logger, cfg *Config) (Launcher, error) {
 	fw, err := newUpgradeFileWatcher(logger, cfg.UpgradeInfoFilePath(), cfg.PollInterval)
 	if err != nil {
 		return Launcher{}, err

@@ -3,18 +3,18 @@ package cosmovisor
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"runtime"
 
 	"cosmossdk.io/x/upgrade/plan"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-	"github.com/rs/zerolog"
 )
 
 // UpgradeBinary will be called after the log message has been parsed and the process has terminated.
 // We can now make any changes to the underlying directory without interference and leave it
 // in a state, so we can make a proper restart
-func UpgradeBinary(logger *zerolog.Logger, cfg *Config, p upgradetypes.Plan) error {
+func UpgradeBinary(logger log.Logger, cfg *Config, p upgradetypes.Plan) error {
 	// simplest case is to switch the link
 	err := plan.EnsureBinary(cfg.UpgradeBin(p.Name))
 	if err == nil {

@@ -61,7 +61,7 @@ func NewServer(settings Settings) (Server, error) {
 		return Server{}, fmt.Errorf("cannot build asserter: %w", err)
 	}
 
-	logger := log.NewZeroLogger(log.ModuleKey, "rosetta")
+	logger := log.NewLoggerWithKV(log.ModuleKey, "rosetta")
 
 	var adapter crgtypes.API
 	switch settings.Offline {
@@ -95,7 +95,7 @@ func newOfflineAdapter(settings Settings) (crgtypes.API, error) {
 	return service.NewOffline(settings.Network, settings.Client)
 }
 
-func newOnlineAdapter(settings Settings, logger *zerolog.Logger) (crgtypes.API, error) {
+func newOnlineAdapter(settings Settings, logger log.Logger) (crgtypes.API, error) {
 	if settings.Client == nil {
 		return nil, fmt.Errorf("client is nil")
 	}

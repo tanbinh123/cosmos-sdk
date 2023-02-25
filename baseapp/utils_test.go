@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
-	"os"
 	"reflect"
 	"strconv"
 	"testing"
@@ -55,7 +54,7 @@ var ParamStoreKey = []byte("paramstore")
 
 func defaultLogger() log.Logger {
 	if testing.Verbose() {
-		return log.NewTMLogger(log.NewSyncWriter(os.Stdout)).With("module", "baseapp/test")
+		return log.NewLoggerWithKV("module", "baseapp/test")
 	}
 
 	return log.NewNopLogger()

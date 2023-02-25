@@ -4,17 +4,17 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
 
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-	"github.com/rs/zerolog"
 )
 
 type fileWatcher struct {
-	logger *zerolog.Logger
+	logger log.Logger
 
 	// full path to a watched file
 	filename string
@@ -29,7 +29,7 @@ type fileWatcher struct {
 	initialized bool
 }
 
-func newUpgradeFileWatcher(logger *zerolog.Logger, filename string, interval time.Duration) (*fileWatcher, error) {
+func newUpgradeFileWatcher(logger log.Logger, filename string, interval time.Duration) (*fileWatcher, error) {
 	if filename == "" {
 		return nil, errors.New("filename undefined")
 	}
